@@ -1,4 +1,6 @@
-﻿class SayaMusicTrack {
+﻿using System.Diagnostics;
+
+class SayaMusicTrack {
     private int id;
     public string title;
     private int playcount;
@@ -6,12 +8,20 @@
     public SayaMusicTrack(string title) { 
         this.title = title;
 
+        Debug.Assert(title != null);
+        Debug.Assert(title.Length <= 200);
+
         Random idPlay = new Random();
         this.id = idPlay.Next(10000, 100000);
         this.playcount = 0;
     }
     public void IncreasePlayCount(int count)
     {
+        if (count > 25000000) {
+           Console.WriteLine("Tidak boleh lebih dari 25000000 pemutaran!");
+           Debug.Assert(false); 
+        }
+
         if(count < 0)
         {
             Console.WriteLine("Jumlah Pemutaran tidak boleh negatif.");
@@ -45,6 +55,9 @@ class SayaMusicUser {
     {
         this.username = username;
 
+        Debug.Assert(username != null);
+        Debug.Assert(username.Length <= 100);
+
         Random idName = new Random();
         this.id = idName.Next(10000, 10000);
 
@@ -60,6 +73,16 @@ class SayaMusicUser {
     }
 
     public void AddTrack(SayaMusicTrack track) { 
+        if(track == null)
+        {
+            throw new ArgumentNullException("Tak tidak boleh null");
+        }
+
+        if(track == null)
+        {
+            throw new ArgumentException("playcount melebihi batas maksimum");
+        }
+
         uploadedTracks.Add(track);
     }
 
